@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
     <title>Purple</title>
-    <link rel="stylesheet" href="main.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="splash.css" type="text/css" media="screen" title="Main" charset="utf-8">
   </head>
   <body>
-    <div id="play-again" style="display:none;">
-    </div>
     <div id="wrapper">
-      <div id="scoreboard">
-        <p><span class="score">Score <span class="score-number">0</span></span><span class="level">Level <span class="level-number">1</span></p>
+      <div id="instructions">
+        <h1>Instructions</h1>
+        <ul>
+          <li>The object of the game is to touch the purple balls.</li>
+          <li>For each purple ball that you touch, you earn 100 points.</li>
+          <li>After you touch all the purple balls on a level, a new set of balls appears. The balls move faster and more balls appear as the levels increase.</li>
+        </ul>
+        <p><a href="play.html" class="awesome large blue">Play</a></p>
       </div>
     </div>
-    <div id="frame-count"></div>
-    <script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="processing.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="clickballs.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>
