@@ -1,0 +1,45 @@
+/* ----- Splash Page ----- */
+
+body {
+  margin:0;
+  padding:0;
+  font-family: Futura, Helvetica, sans-serif;
+  font-size: 2em;
+}
+
+#wrapper {
+  width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 4em;
+}
+
+p {
+  text-align: center;
+}
+
+.awesome{
+  display: inline-block;
+  padding: 5px 10px 6px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 1;
+  -webkit-border-radius: 5px;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  position: relative;
+  cursor: pointer;
+}
+
+.large.awesome {
+  font-size: 2em;
+  padding: 0.6em 1em 0.7em;
+}
+ 
+/* Colors ---------- */
+.blue.awesome {
+  background-color: #2daebf;
+}
+

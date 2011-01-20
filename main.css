@@ -1,0 +1,57 @@
+body {
+  font-family: "HelveticaNeue";
+  font-weight: bold;
+  background-color: black;
+  color: white;
+}
+
+p {
+  margin:0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#game {
+  border: 0.5em solid #000;
+  background: white;
+  padding: 0.25em;
+  border-radius: 1em;
+  -webkit-border-radius: 1em;
+}
+
+#play-again {
+  z-index: 100;
+}
+
+div#frame-count {
+  position:absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+}
+
+#wrapper {
+  margin-top: 2em;
+}
+
+#scoreboard {
+  position: absolute;
+  text-align: center;
+  z-index: 50;
+}
+
+#scoreboard > p {
+  font-size: 1.7em;
+}
+
+.level {
+  padding-left: 10em;
+}
+
+.score-number, .level-number {
+  color: rgb(242,242,0);
+  font-size: 1.2em;
+}

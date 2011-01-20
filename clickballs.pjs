@@ -1,0 +1,196 @@
+// ClickBalls
+// Version 0.2.0
+// Date: 21 September 2010
+// Author: Larry Staton Jr.
+
+// CONSTANTS
+String[] GAME_STATUS = { "START", "ACTIVE", "OVER" };
+var canvasWidth = $(window).width() - ($(window).width() * 0.15);
+var canvasHeight = $(window).height() - ($(window).height() * 0.15);
+
+color[] ballColors = { color(255,0,0), color(255,153,0) }; // List of ball Colors
+color gameBallColor = color(255,0,255); // Ball color to click
+int level; // Current playing level
+
+int score = 0; // Player score
+Ball[] balls = new Balls[]; // Array to hold the Balls
+boolean levelComplete;
+
+void createBallsForLevel(nextLevel) {
+
+    int numberOfRandomBallsToCreate = (level * 2); // Number of random balls per level
+    int numberOfGameBallsToCreate = level; // Number of random balls per level
+
+    // Create some game Balls with a random color from the list of ballColors
+    for(int i=0; i < numberOfRandomBallsToCreate; i++) {
+      balls[i] = new Ball(ballColors[int(random(0,ballColors.length))]);
+    }
+
+    // Create some random Balls with a random color from the list of ballColors
+    int ballArrayLength = numberOfGameBallsToCreate + numberOfRandomBallsToCreate;
+    for(int i=numberOfRandomBallsToCreate; i < ballArrayLength; i++) {
+      balls[i] = new PurpleBall(gameBallColor);
+    }
+
+    GAME_STATUS = "ACTIVE";
+    levelComplete = false;
+}
+
+void setup() {
+
+  size(canvasWidth, canvasHeight); // Size is (width, height) and can be referred to as such
+  noStroke(); // Don't make a line around the canvas
+  frameRate(); // TODO: Experiment with this
+  
+  // Game variables
+  GAME_STATUS = "START";
+  level = 1;
+  levelComplete = false;
+  createBallsForLevel(level);
+
+}
+
+void draw() {
+
+  background(0); // Redraw the background
+
+  // Loop thru the balls and tell them to update
+  if(GAME_STATUS === "ACTIVE") {
+    for(int j=0; j < balls.length; j++) {
+      balls[j].update();
+    }
+  } else if (GAME_STATUS === "OVER") {
+    // Draw "Game Over"
+    $("#wrapper").css("opacity", "0.2");
+    $("#play-again").text("Play Again");
+    $("#play-again").css({
+      position: "absolute",
+      "font-size" : "5em",
+      top: ($(window).height() / 2) - ($(window).height() * 0.10),
+      left: ($(window).width() / 2) - ($(window).width() * 0.20)
+    })
+    $("#play-again").show();
+    GAME_STATUS = "START";
+  }
+  
+}
+
+void mousePressed() {
+  
+  // Hit test
+  for(int i = 0; i < balls.length; i++) {
+    float d = dist(mouseX, mouseY, balls[i].xpos, balls[i].ypos);
+
+    if (d < balls[i].ballSize * 0.5) { // ballSize radius
+
+        hitBall = balls[i];
+        
+        // Check the color
+        // If it's purple, delete from the canvas and add 100 points
+        // If it's any other color, game is over
+        
+        if (hitBall.ballColor == gameBallColor) {
+
+          // Get the indexOf the hitBall from the balls array
+          // And splice it out of the array
+          balls.splice(balls.indexOf(hitBall), 1);
+          
+          // Add 100 points
+          score += 100;
+          $(".score-number").text(score);
+          
+          // Check the number of gameColorBalls left
+          levelComplete = isLevelComplete();
+          
+          // If no purple balls, and increase level
+          if (levelComplete === true) {
+            level += 1;
+            $(".level-number").text(level);
+            createBallsForLevel(level);
+          }
+          
+        } else if (hitBall.ballColor == color(255,0,0) || hitBall.ballColor == color(255,153,0)) {
+          GAME_STATUS = "OVER";
+        }
+      }
+  }
+}
+
+boolean isLevelComplete() {
+  
+  var foundOne = true;
+  for(int j=0; j < balls.length; j++) {
+
+    if (balls[j].ballColor === gameBallColor ){
+      foundOne = false;
+    }
+    
+  }
+  return foundOne;
+
+}
+
+class Ball {
+  float xpos, ypos; // Position of the ball
+  int ballSize; // Size of the ball (should be between 80 and 200)
+  
+  float xspeed; // Speed along x-axis
+  float yspeed; // Speed along y-axis
+  
+  int xdirection = 1; // Left or right
+  int ydirection = 1; // Top or bottom
+  
+  color ballColor; // Color of the ball
+  
+  Ball(newBallColor) {
+  
+    ballSize = int(random(100,150));
+    xpos = random(ballSize, width - ballSize); // Keep balls from getting caught under the screen
+    ypos = random(ballSize, height - ballSize);
+    xspeed = random(0.2, 0.8*level);
+    yspeed = random(0.2, 0.8*level);
+    ballColor = newBallColor;
+    
+  }
+  
+  void update() {
+    xpos = xpos + (xspeed * xdirection);
+    xpos = constrain(xpos, 0, width);
+    ypos = ypos + (yspeed * ydirection);
+    ypos = constrain(ypos, 0, height);
+    
+    // Test to see if the ball's position exceeds the boundary of the canvas
+    // If it does, reverse its direction by multiplying its direction by -1
+    if (xpos > (width - (ballSize / 2)) || xpos < (ballSize / 2)) {
+      xdirection *= -1;
+    }
+    if (ypos > height - (ballSize / 2) || ypos < (ballSize / 2)) {
+      ydirection *= -1;
+    }
+    fill(ballColor);
+    ellipse(xpos, ypos, ballSize, ballSize);
+  }
+  
+  void draw() {
+    // Set the fill color for this ball
+    fill(ballColor);
+    // Draw the Ball
+    ellipse(xpos, ypos, ballSize, ballSize);
+  }
+
+}
+
+class PurpleBall extends Ball {
+
+  PurpleBall(newBallColor) {
+    
+    super(newBallColor);
+    xdirection = -1; // Top or bottom
+    ydirecion = -1;
+    xpos = random(ballSize, width - ballSize); // Keep balls from getting caught under the screen
+    ypos = random(ballSize, height - ballSize);
+    xspeed = random(0.2, 0.8*level);
+    yspeed = random(0.2, 0.8*level);
+
+  }
+}
