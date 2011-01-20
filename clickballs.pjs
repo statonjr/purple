@@ -13,7 +13,7 @@ color gameBallColor = color(255,0,255); // Ball color to click
 int level; // Current playing level
 
 int score = 0; // Player score
-Ball[] balls = new Balls[]; // Array to hold the Balls
+Ball[] balls;
 boolean levelComplete;
 
 void createBallsForLevel(nextLevel) {
@@ -21,12 +21,13 @@ void createBallsForLevel(nextLevel) {
     int numberOfRandomBallsToCreate = (level * 2); // Number of random balls per level
     int numberOfGameBallsToCreate = level; // Number of random balls per level
 
+	balls = new Ball[numberOfRandomBallsToCreate]; // Array to hold the Balls
     // Create some game Balls with a random color from the list of ballColors
     for(int i=0; i < numberOfRandomBallsToCreate; i++) {
       balls[i] = new Ball(ballColors[int(random(0,ballColors.length))]);
     }
 
-    // Create some random Balls with a random color from the list of ballColors
+    // Create some random PurpleBalls
     int ballArrayLength = numberOfGameBallsToCreate + numberOfRandomBallsToCreate;
     for(int i=numberOfRandomBallsToCreate; i < ballArrayLength; i++) {
       balls[i] = new PurpleBall(gameBallColor);
